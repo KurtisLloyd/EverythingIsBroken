@@ -1,0 +1,29 @@
+import java.util.Random;
+
+public class Worker implements Runnable {
+	
+	private Resource resource = new Resource();
+	private static Random gen = new Random();
+	
+	@Override
+	public void run(){
+		System.out.println("Thread " + Thread.currentThread().getId() + " spinning up");
+		waitThread();
+		synchronized(resource){
+		System.out.println("Thread " + Thread.currentThread().getId() + " is incrementing!");
+		resource.incCounter();
+		}
+		System.out.println("Resource is now " + resource.getCounter());
+		
+	}
+	
+	public void waitThread(){
+		try {
+			Thread.sleep(gen.nextInt(3000)+ 2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

@@ -2,7 +2,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
-	private static int NUM_CUSTOMERS = 2;
+	private static int NUM_CUSTOMERS = 5;
 	
 	private static ExecutorService service = Executors.newFixedThreadPool(NUM_CUSTOMERS);
 

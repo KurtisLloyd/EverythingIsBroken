@@ -1,0 +1,37 @@
+import java.util.Random;
+import java.util.concurrent.Semaphore;
+
+public class Worker implements Runnable {
+	
+	private Resource resource = new Resource();
+	private static Random gen = new Random();
+	
+	
+	@Override
+	public void run(){
+		System.out.println("Thread " + Thread.currentThread().getId() + " spinning up");
+		waitThread();
+		try {
+			
+			System.out.println("Thread " + Thread.currentThread().getId() + " is incrementing!");
+			resource.incCounter();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		System.out.println("Resource is now " + resource.getCounter());
+		
+		System.out.println("Thread " + Thread.currentThread().getId() + " is exiting!");
+	}
+	
+	public void waitThread(){
+		try {
+			Thread.sleep(gen.nextInt(3000)+ 2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

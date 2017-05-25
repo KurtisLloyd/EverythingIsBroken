@@ -10,8 +10,7 @@ public class DekkerWorker implements Runnable {
 
 	@Override
 	public void run() {
-		dekker1();
-		dekker2();
+
 	}
 	
 	public void dekker1(){

@@ -11,17 +11,23 @@ public class MainDekkers {
 	public static void main(String [] args){
 		
 		final int numberOfThreads = 2;
-		List<DekkerWorker> workers = new ArrayList<>();
+		DekkerWorker worker = new DekkerWorker();
 		
-		ExecutorService threadService = Executors.newFixedThreadPool(numberOfThreads);
+		new Thread(){
+			@Override
+			public void run(){
+				worker.dekker1();
+			}
+		}.start();
+	
+		new Thread(){
+			@Override
+			public void run(){
+				worker.dekker2();
+			}
+		}.start();
 		
-		for (int i = 0; i < numberOfThreads; i++) {
-			DekkerWorker worker = new DekkerWorker();
-			workers.add(worker);
-		}
-		for(DekkerWorker worker: workers){
-			threadService.submit(worker);
-		}
+		
 		
 	}
 	
