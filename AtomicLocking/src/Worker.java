@@ -3,7 +3,7 @@ import java.util.concurrent.Semaphore;
 
 public class Worker implements Runnable {
 	
-	private Resource resource = new Resource();
+	private static Resource resource = new Resource();
 	private static Random gen = new Random();
 	
 	
