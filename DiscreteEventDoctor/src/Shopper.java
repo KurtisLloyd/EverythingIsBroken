@@ -1,0 +1,82 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Shopper implements Runnable {
+	private ShopperStates state;
+	
+	List<StoreEvent> events = new ArrayList<>();
+	
+	private int id;
+	
+	public Shopper(int id){
+		this.setId(id);
+		this.setState(ShopperStates.WAITING);
+		this.events.add(new StoreEvent(id, ShopperEvent.GotCart));
+		this.events.add(new StoreEvent(id, ShopperEvent.Shopped));
+		this.events.add(new StoreEvent(id, ShopperEvent.CheckedOut));
+		this.events.add(new StoreEvent(id, ShopperEvent.Departed));
+	}
+
+	
+	public ShopperStates getState(){
+		return state;
+	}
+	public void setState(ShopperStates state){
+		this.state = state;
+	}
+	public List<StoreEvent> getEvents(){
+		return events;
+	}
+	public void setEvents(List<StoreEvent> events){
+		this.events = events;
+	}
+	public int getId(){
+		return id;
+	}
+	public void setId(int id){
+		this.id = id;
+	}
+	@Override
+	public void run() {
+		try{
+			getCart();
+			processRegularEvent(this.events.get(0));
+			shop();
+			processRegularEvent(this.events.get(1));
+			checkout();
+			processRegularEvent(this.events.get(2));
+			leaveStore();
+			processRegularEvent(this.events.get(3));
+			
+			System.out.println("Thread "+ id + "'s total time " + Resources.getSimulationClock());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void processRegularEvent(StoreEvent event){
+		long waitTime = event.calculateDuration();
+		event.setDuration(waitTime);
+		Resources.incrementClock(waitTime);
+	}
+	private void getCart() throws InterruptedException{
+		Resources.locke.acquire();
+		System.out.println("Thread" + id + " aquired a cart.");
+		this.setState(ShopperStates.GETTING);
+	}
+	private void shop(){
+		System.out.println("Thread " + id + " is shopping!");
+		this.setState(ShopperStates.SHOPPING);
+	}
+	private void checkout(){
+		System.out.println("Thread " + id + " is checking out!");
+		this.setState(ShopperStates.CHECKINGOUT);
+	}
+	private void leaveStore(){
+		Resources.locke.release();
+		System.out.println("Thread " + id + " is leaving the store and putting away the cart.");
+		this.setState(ShopperStates.LEAVING);
+	}
+
+}

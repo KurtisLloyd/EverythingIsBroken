@@ -3,7 +3,7 @@ import java.util.concurrent.Executors;
 
 public class Main {
 	
-	public static final int NUM_OF_PATRONS = 4;
+public static final int NUM_OF_PATRONS = 4;
 	
 	static ExecutorService pool = Executors.newFixedThreadPool(NUM_OF_PATRONS);
 	
